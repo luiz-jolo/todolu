@@ -24,6 +24,7 @@ public class TaskCard {
         this.creatorId = creatorId;
         this.priority = priority;
         this.status = status;
+        this.active = true;
     }
 
     @Override
@@ -122,5 +123,38 @@ public class TaskCard {
 
     @Enumerated(EnumType.STRING)
     private TaskCardStatus status;
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    private Boolean active;
+
+    public void updateInfo(TaskCardUpdateData taskCardData){
+        if(taskCardData.title() != null){
+            this.title = taskCardData.title();
+        }
+        if(taskCardData.description() != null){
+            this.description = taskCardData.description();
+        }
+        if(taskCardData.dueDate() != null){
+            this.dueDate = taskCardData.dueDate();
+        }
+        if(taskCardData.status() != null){
+            this.status = taskCardData.status();
+        }
+        if(taskCardData.priority() != null){
+            this.priority = taskCardData.priority();
+        }
+        this.updatedDate = LocalDateTime.now();
+    }
+
+    public void disable(){
+        this.active = false;
+    }
 
 }

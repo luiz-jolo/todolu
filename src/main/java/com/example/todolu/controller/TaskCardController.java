@@ -1,11 +1,11 @@
 package com.example.todolu.controller;
 
-import com.example.todolu.taskcard.TaskCard;
-import com.example.todolu.taskcard.TaskCardData;
-import com.example.todolu.taskcard.TaskCardListData;
-import com.example.todolu.taskcard.TaskCardRepository;
+import com.example.todolu.taskcard.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,23 +18,37 @@ public class TaskCardController {
     private TaskCardRepository taskCardRepository;
 
     @PostMapping
-    public void createTaskCard(@RequestBody @Valid TaskCardData dados){
+    public void createTaskCard(@RequestBody @Valid TaskCardData taskCardData){
         taskCardRepository.save(new TaskCard(
                 null,
-                dados.title(),
-                dados.description(),
-                dados.createdDate(),
-                dados.updatedDate(),
-                dados.dueDate(),
-                dados.creatorId(),
-                dados.priority(),
-                dados.status()
+                taskCardData.title(),
+                taskCardData.description(),
+                taskCardData.createdDate(),
+                taskCardData.updatedDate(),
+                taskCardData.dueDate(),
+                taskCardData.creatorId(),
+                taskCardData.priority(),
+                taskCardData.status()
         ));
     }
 
     @GetMapping
-    public List<TaskCardListData> listTaskCards(){
-        return taskCardRepository.findAll().stream().map(TaskCardListData::new).toList();
+    public Page<TaskCardListData> listTaskCards(Pageable paginate){
+        return taskCardRepository.findAllByActiveTrue(paginate).map(TaskCardListData::new);
+    }
+
+    @PutMapping
+    @Transactional
+    public void updateTaskCard(@RequestBody @Valid TaskCardUpdateData taskCardData){
+        var taskCard = taskCardRepository.getReferenceById(taskCardData.id());
+        taskCard.updateInfo(taskCardData);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void deleteTaskCard(@PathVariable Long id) {
+        var taskCard = taskCardRepository.getReferenceById(id);
+        taskCard.disable();
     }
 
 }
