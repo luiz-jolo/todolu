@@ -6,9 +6,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("taskcard")
@@ -18,8 +18,8 @@ public class TaskCardController {
     private TaskCardRepository taskCardRepository;
 
     @PostMapping
-    public void createTaskCard(@RequestBody @Valid TaskCardData taskCardData){
-        taskCardRepository.save(new TaskCard(
+    public ResponseEntity createTaskCard(@RequestBody @Valid TaskCardData taskCardData, UriComponentsBuilder uriComponentsBuilder){
+        var taskCard = new TaskCard(
                 null,
                 taskCardData.title(),
                 taskCardData.description(),
@@ -29,26 +29,42 @@ public class TaskCardController {
                 taskCardData.creatorId(),
                 taskCardData.priority(),
                 taskCardData.status()
-        ));
+        );
+        taskCardRepository.save(taskCard);
+
+        var uri = uriComponentsBuilder.path("/taskcard/{id}").buildAndExpand(taskCard.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(new TaskCardDetailData(taskCard));
     }
 
     @GetMapping
-    public Page<TaskCardListData> listTaskCards(Pageable paginate){
-        return taskCardRepository.findAllByActiveTrue(paginate).map(TaskCardListData::new);
+    public ResponseEntity<Page<TaskCardListData>> listTaskCards(Pageable paginate){
+        var page = taskCardRepository.findAllByActiveTrue(paginate).map(TaskCardListData::new);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity taskCardDetails(@PathVariable Long id){
+        var taskCard = taskCardRepository.getReferenceById(id);
+        return ResponseEntity.ok(new TaskCardDetailData(taskCard));
     }
 
     @PutMapping
     @Transactional
-    public void updateTaskCard(@RequestBody @Valid TaskCardUpdateData taskCardData){
+    public ResponseEntity updateTaskCard(@RequestBody @Valid TaskCardUpdateData taskCardData){
         var taskCard = taskCardRepository.getReferenceById(taskCardData.id());
         taskCard.updateInfo(taskCardData);
+
+        return ResponseEntity.ok(new TaskCardDetailData(taskCard));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void deleteTaskCard(@PathVariable Long id) {
+    public ResponseEntity deleteTaskCard(@PathVariable Long id) {
         var taskCard = taskCardRepository.getReferenceById(id);
         taskCard.disable();
+        return ResponseEntity.noContent().build();
+
     }
 
 }
