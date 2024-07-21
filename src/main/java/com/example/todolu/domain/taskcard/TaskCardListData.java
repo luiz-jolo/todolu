@@ -1,4 +1,4 @@
-package com.example.todolu.taskcard;
+package com.example.todolu.domain.taskcard;
 
 import java.time.LocalDateTime;
 

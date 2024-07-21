@@ -1,6 +1,6 @@
 package com.example.todolu.controller;
 
-import com.example.todolu.taskcard.*;
+import com.example.todolu.domain.taskcard.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,6 @@ public class TaskCardController {
                 taskCardData.status()
         );
         taskCardRepository.save(taskCard);
-
         var uri = uriComponentsBuilder.path("/taskcard/{id}").buildAndExpand(taskCard.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new TaskCardDetailData(taskCard));

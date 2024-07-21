@@ -1,4 +1,4 @@
-package com.example.todolu.taskcard;
+package com.example.todolu.domain.taskcard;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
