@@ -1,4 +1,4 @@
-package com.example.todolu.infra;
+package com.example.todolu.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
