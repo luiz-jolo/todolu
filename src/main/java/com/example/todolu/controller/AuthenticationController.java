@@ -1,5 +1,8 @@
 package com.example.todolu.controller;
 
+import com.example.todolu.domain.user.User;
+import com.example.todolu.infra.security.TokenJWTData;
+import com.example.todolu.infra.security.TokenService;
 import com.example.todolu.user.AuthenticationData;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +21,17 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager manager;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid AuthenticationData authenticationData) {
-        var token = new UsernamePasswordAuthenticationToken(authenticationData.login(), authenticationData.password());
-        var authentication =  manager.authenticate(token);
+        var authenticationToken = new UsernamePasswordAuthenticationToken(authenticationData.login(), authenticationData.password());
+        var authentication =  manager.authenticate(authenticationToken);
 
-        return ResponseEntity.ok().build();
+        var tokenJWT = tokenService.generateToken((User) authentication.getPrincipal());
+
+        return ResponseEntity.ok(new TokenJWTData(tokenJWT));
     }
 
 }
