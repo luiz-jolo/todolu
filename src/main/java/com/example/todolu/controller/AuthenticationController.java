@@ -26,12 +26,18 @@ public class AuthenticationController {
 
     @PostMapping
     public ResponseEntity login(@RequestBody @Valid AuthenticationData authenticationData) {
-        var authenticationToken = new UsernamePasswordAuthenticationToken(authenticationData.login(), authenticationData.password());
-        var authentication =  manager.authenticate(authenticationToken);
+        try{
+            var authenticationToken = new UsernamePasswordAuthenticationToken(authenticationData.login(), authenticationData.password());
+            var authentication =  manager.authenticate(authenticationToken);
 
-        var tokenJWT = tokenService.generateToken((User) authentication.getPrincipal());
+            var tokenJWT = tokenService.generateToken((User) authentication.getPrincipal());
 
-        return ResponseEntity.ok(new TokenJWTData(tokenJWT));
+            return ResponseEntity.ok(new TokenJWTData(tokenJWT));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
 }
