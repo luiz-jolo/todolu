@@ -14,7 +14,7 @@ public class TaskCard {
     public TaskCard() {
     }
 
-    public TaskCard(Long id, String title, String description, LocalDateTime createdDate, LocalDateTime updatedDate, LocalDateTime dueDate, int creatorId, String priority, TaskCardStatus status) {
+    public TaskCard(Long id, String title, String description, LocalDateTime createdDate, LocalDateTime updatedDate, LocalDateTime dueDate, Long creatorId, String priority, TaskCardStatus status) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -87,11 +87,11 @@ public class TaskCard {
         this.dueDate = dueDate;
     }
 
-    public int getCreatorId() {
+    public Long getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(int creatorId) {
+    public void setCreatorId(Long creatorId) {
         this.creatorId = creatorId;
     }
 
@@ -118,7 +118,7 @@ public class TaskCard {
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
     private LocalDateTime dueDate;
-    private int creatorId;
+    private Long creatorId;
     private String priority;
 
     @Enumerated(EnumType.STRING)

@@ -9,8 +9,6 @@ public record TaskCardData(
         @NotBlank
         String title,
         String description,
-        @NotNull
-        int creatorId,
         LocalDateTime createdDate,
         LocalDateTime updatedDate,
         LocalDateTime dueDate,

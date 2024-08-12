@@ -40,8 +40,6 @@ public class User implements UserDetails {
         return Objects.hash(getId());
     }
 
-
-
     public Long getId() {
         return id;
     }

@@ -1,12 +1,16 @@
 package com.example.todolu.controller;
 
 import com.example.todolu.domain.taskcard.*;
+import com.example.todolu.domain.user.AuthenticatedUserService;
+import com.example.todolu.domain.user.User;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -17,8 +21,14 @@ public class TaskCardController {
     @Autowired
     private TaskCardRepository taskCardRepository;
 
+    @Autowired
+    private AuthenticatedUserService authenticatedUserService;
+
     @PostMapping
     public ResponseEntity createTaskCard(@RequestBody @Valid TaskCardData taskCardData, UriComponentsBuilder uriComponentsBuilder){
+
+        var userId = authenticatedUserService.getAuthenticatedUserId();
+
         var taskCard = new TaskCard(
                 null,
                 taskCardData.title(),
@@ -26,7 +36,7 @@ public class TaskCardController {
                 taskCardData.createdDate(),
                 taskCardData.updatedDate(),
                 taskCardData.dueDate(),
-                taskCardData.creatorId(),
+                userId,
                 taskCardData.priority(),
                 taskCardData.status()
         );
