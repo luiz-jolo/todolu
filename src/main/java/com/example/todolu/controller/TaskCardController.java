@@ -2,15 +2,12 @@ package com.example.todolu.controller;
 
 import com.example.todolu.domain.taskcard.*;
 import com.example.todolu.domain.user.AuthenticatedUserService;
-import com.example.todolu.domain.user.User;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 

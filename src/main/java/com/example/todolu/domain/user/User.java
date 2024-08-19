@@ -8,18 +8,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Table(name="users")
 @Entity(name="User")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     private String login;
     private String password;
 
-    public User(Long id, String login, String password) {
+    public User(UUID id, String login, String password) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -35,18 +36,19 @@ public class User implements UserDetails {
         return Objects.equals(getId(), user.getId());
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(getId());
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getLogin() {
         return login;

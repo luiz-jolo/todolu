@@ -6,33 +6,29 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
-@Table(name="taskcards")
-@Entity(name="TaskCard")
+@Table(name = "taskcards")
+@Entity(name = "TaskCard")
 public class TaskCard {
 
-    public TaskCard() {
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    private String description;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
+    private LocalDateTime dueDate;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "creator_id", nullable = false)
+    private UUID creatorId;
 
-    public TaskCard(Long id, String title, String description, LocalDateTime createdDate, LocalDateTime updatedDate, LocalDateTime dueDate, Long creatorId, String priority, TaskCardStatus status) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
-        this.dueDate = dueDate;
-        this.creatorId = creatorId;
-        this.priority = priority;
-        this.status = status;
-        this.active = true;
-    }
+    private String priority;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TaskCard taskCard)) return false;
-        return getId().equals(taskCard.getId());
-    }
+    @Enumerated(EnumType.STRING)
+    private TaskCardStatus status;
+
 
     @Override
     public int hashCode() {
@@ -87,11 +83,11 @@ public class TaskCard {
         this.dueDate = dueDate;
     }
 
-    public Long getCreatorId() {
+    public UUID getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(Long creatorId) {
+    public void setCreatorId(UUID creatorId) {
         this.creatorId = creatorId;
     }
 
@@ -111,18 +107,6 @@ public class TaskCard {
         this.status = status;
     }
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String title;
-    private String description;
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
-    private LocalDateTime dueDate;
-    private Long creatorId;
-    private String priority;
-
-    @Enumerated(EnumType.STRING)
-    private TaskCardStatus status;
 
     public Boolean getActive() {
         return active;
@@ -134,26 +118,49 @@ public class TaskCard {
 
     private Boolean active;
 
-    public void updateInfo(TaskCardUpdateData taskCardData){
-        if(taskCardData.title() != null){
+    public void updateInfo(TaskCardUpdateData taskCardData) {
+        if (taskCardData.title() != null) {
             this.title = taskCardData.title();
         }
-        if(taskCardData.description() != null){
+        if (taskCardData.description() != null) {
             this.description = taskCardData.description();
         }
-        if(taskCardData.dueDate() != null){
+        if (taskCardData.dueDate() != null) {
             this.dueDate = taskCardData.dueDate();
         }
-        if(taskCardData.status() != null){
+        if (taskCardData.status() != null) {
             this.status = taskCardData.status();
         }
-        if(taskCardData.priority() != null){
+        if (taskCardData.priority() != null) {
             this.priority = taskCardData.priority();
         }
         this.updatedDate = LocalDateTime.now();
     }
 
-    public void disable(){
+    public TaskCard() {
+    }
+
+    public TaskCard(Long id, String title, String description, LocalDateTime createdDate, LocalDateTime updatedDate, LocalDateTime dueDate, UUID creatorId, String priority, TaskCardStatus status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+        this.dueDate = dueDate;
+        this.creatorId = creatorId;
+        this.priority = priority;
+        this.status = status;
+        this.active = true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TaskCard taskCard)) return false;
+        return getId().equals(taskCard.getId());
+    }
+
+    public void disable() {
         this.active = false;
     }
 
