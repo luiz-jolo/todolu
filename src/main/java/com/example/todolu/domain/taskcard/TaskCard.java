@@ -29,7 +29,6 @@ public class TaskCard {
     @Enumerated(EnumType.STRING)
     private TaskCardStatus status;
 
-
     @Override
     public int hashCode() {
         return Objects.hash(getId());
@@ -140,16 +139,14 @@ public class TaskCard {
     public TaskCard() {
     }
 
-    public TaskCard(Long id, String title, String description, LocalDateTime createdDate, LocalDateTime updatedDate, LocalDateTime dueDate, UUID creatorId, String priority, TaskCardStatus status) {
-        this.id = id;
+    public TaskCard(String title, String description, LocalDateTime dueDate, UUID creatorId, String priority) {
         this.title = title;
         this.description = description;
-        this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
+        this.createdDate = LocalDateTime.now();
         this.dueDate = dueDate;
         this.creatorId = creatorId;
         this.priority = priority;
-        this.status = status;
+        this.status = TaskCardStatus.BACKLOG;
         this.active = true;
     }
 

@@ -21,23 +21,13 @@ public class TaskCardController {
     @Autowired
     private AuthenticatedUserService authenticatedUserService;
 
+    @Autowired
+    private TaskCardService taskCardService;
+
     @PostMapping
-    public ResponseEntity createTaskCard(@RequestBody @Valid TaskCardData taskCardData, UriComponentsBuilder uriComponentsBuilder){
+    public ResponseEntity createTaskCard(@RequestBody @Valid TaskCardCreateData taskCardCreateData, UriComponentsBuilder uriComponentsBuilder){
 
-        var userId = authenticatedUserService.getAuthenticatedUserId();
-
-        var taskCard = new TaskCard(
-                null,
-                taskCardData.title(),
-                taskCardData.description(),
-                taskCardData.createdDate(),
-                taskCardData.updatedDate(),
-                taskCardData.dueDate(),
-                userId,
-                taskCardData.priority(),
-                taskCardData.status()
-        );
-        taskCardRepository.save(taskCard);
+        var taskCard = taskCardService.create(taskCardCreateData);
         var uri = uriComponentsBuilder.path("/taskcard/{id}").buildAndExpand(taskCard.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new TaskCardDetailData(taskCard));
@@ -45,32 +35,26 @@ public class TaskCardController {
 
     @GetMapping
     public ResponseEntity<Page<TaskCardListData>> listTaskCards(Pageable paginate){
-        var page = taskCardRepository.findAllByActiveTrue(paginate).map(TaskCardListData::new);
-        return ResponseEntity.ok(page);
+        return ResponseEntity.ok(taskCardService.listTaskCards(paginate));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity taskCardDetails(@PathVariable Long id){
-        var taskCard = taskCardRepository.getReferenceById(id);
-        return ResponseEntity.ok(new TaskCardDetailData(taskCard));
+        return ResponseEntity.ok(taskCardService.taskCardDetails(id));
     }
 
     @PutMapping
     @Transactional
     public ResponseEntity updateTaskCard(@RequestBody @Valid TaskCardUpdateData taskCardData){
-        var taskCard = taskCardRepository.getReferenceById(taskCardData.id());
-        taskCard.updateInfo(taskCardData);
-
-        return ResponseEntity.ok(new TaskCardDetailData(taskCard));
+        var taskCard = taskCardService.updateTaskCard(taskCardData);
+        return ResponseEntity.ok(taskCard);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity deleteTaskCard(@PathVariable Long id) {
-        var taskCard = taskCardRepository.getReferenceById(id);
-        taskCard.disable();
+        taskCardService.disableTaskCard(id);
         return ResponseEntity.noContent().build();
-
     }
 
 }
