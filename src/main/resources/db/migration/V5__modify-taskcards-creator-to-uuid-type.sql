@@ -1,2 +1,2 @@
 ALTER TABLE taskcards
-    MODIFY COLUMN creator_id CHAR(36) NOT NULL;
+    MODIFY COLUMN creator_id BINARY(16) NOT NULL;

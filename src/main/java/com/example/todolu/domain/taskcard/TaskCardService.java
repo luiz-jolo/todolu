@@ -1,10 +1,13 @@
 package com.example.todolu.domain.taskcard;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.todolu.domain.user.AuthenticatedUserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.UUID;
 
 @Service
 public class TaskCardService {
@@ -17,14 +20,20 @@ public class TaskCardService {
 
     public TaskCard create(TaskCardCreateData taskCardCreateData) {
 
-        var userId = authenticatedUserService.getAuthenticatedUserId();
+        var creator = authenticatedUserService.getAuthenticatedUser();
+        System.out.println("CREATOR");
+        var teste = creator.toString();
+        System.out.println(teste);
         var taskCard = new TaskCard(
                 taskCardCreateData.title(),
                 taskCardCreateData.description(),
                 taskCardCreateData.dueDate(),
-                userId,
+                creator,
                 taskCardCreateData.priority()
         );
+        System.out.println("TASKCARD CREATOR");
+        var testedois = taskCard.getCreator().toString();
+        System.out.println(testedois);
         return taskCardRepository.save(taskCard);
     }
 

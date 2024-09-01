@@ -1,14 +1,12 @@
 package com.example.todolu.domain.user;
 
+import com.example.todolu.domain.taskcard.TaskCard;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Table(name="users")
 @Entity(name="User")
@@ -20,10 +18,16 @@ public class User implements UserDetails {
     private String login;
     private String password;
 
-    public User(UUID id, String login, String password) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
+    @OneToMany(mappedBy = "creator")
+    private Set<TaskCard> taskCards;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 
     public User() {

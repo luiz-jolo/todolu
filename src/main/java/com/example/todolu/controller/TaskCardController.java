@@ -25,6 +25,7 @@ public class TaskCardController {
     private TaskCardService taskCardService;
 
     @PostMapping
+    @Transactional
     public ResponseEntity createTaskCard(@RequestBody @Valid TaskCardCreateData taskCardCreateData, UriComponentsBuilder uriComponentsBuilder){
 
         var taskCard = taskCardService.create(taskCardCreateData);

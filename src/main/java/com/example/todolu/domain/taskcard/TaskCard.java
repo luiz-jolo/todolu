@@ -1,5 +1,6 @@
 package com.example.todolu.domain.taskcard;
 
+import com.example.todolu.domain.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.*;
@@ -20,9 +21,32 @@ public class TaskCard {
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
     private LocalDateTime dueDate;
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "creator_id", nullable = false)
-    private UUID creatorId;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private User creator;
+
+    public TaskCard() {
+    }
+
+    public TaskCard(String title, String description, LocalDateTime dueDate, User creator, String priority) {
+        this.title = title;
+        this.description = description;
+        this.createdDate = LocalDateTime.now();
+        this.dueDate = dueDate;
+        this.creator = creator;
+        this.priority = priority;
+        this.status = TaskCardStatus.BACKLOG;
+        this.active = true;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
 
     private String priority;
 
@@ -82,14 +106,6 @@ public class TaskCard {
         this.dueDate = dueDate;
     }
 
-    public UUID getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(UUID creatorId) {
-        this.creatorId = creatorId;
-    }
-
     public String getPriority() {
         return priority;
     }
@@ -136,19 +152,7 @@ public class TaskCard {
         this.updatedDate = LocalDateTime.now();
     }
 
-    public TaskCard() {
-    }
 
-    public TaskCard(String title, String description, LocalDateTime dueDate, UUID creatorId, String priority) {
-        this.title = title;
-        this.description = description;
-        this.createdDate = LocalDateTime.now();
-        this.dueDate = dueDate;
-        this.creatorId = creatorId;
-        this.priority = priority;
-        this.status = TaskCardStatus.BACKLOG;
-        this.active = true;
-    }
 
     @Override
     public boolean equals(Object o) {
