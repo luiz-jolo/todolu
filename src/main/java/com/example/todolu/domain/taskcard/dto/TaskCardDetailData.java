@@ -1,5 +1,7 @@
-package com.example.todolu.domain.taskcard;
+package com.example.todolu.domain.taskcard.dto;
 
+import com.example.todolu.domain.taskcard.TaskCard;
+import com.example.todolu.domain.taskcard.TaskCardStatus;
 import com.example.todolu.domain.user.User;
 
 public record TaskCardDetailData(Long id, String title, String description, java.time.LocalDateTime createdDate,

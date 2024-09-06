@@ -1,5 +1,7 @@
-package com.example.todolu.domain.taskcard;
+package com.example.todolu.domain.taskcard.dto;
 
+import com.example.todolu.domain.taskcard.TaskCard;
+import com.example.todolu.domain.taskcard.TaskCardStatus;
 import com.example.todolu.domain.user.User;
 
 import java.time.LocalDateTime;

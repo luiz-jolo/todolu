@@ -1,6 +1,10 @@
 package com.example.todolu.controller;
 
 import com.example.todolu.domain.taskcard.*;
+import com.example.todolu.domain.taskcard.dto.TaskCardCreateData;
+import com.example.todolu.domain.taskcard.dto.TaskCardDetailData;
+import com.example.todolu.domain.taskcard.dto.TaskCardListData;
+import com.example.todolu.domain.taskcard.dto.TaskCardUpdateData;
 import com.example.todolu.domain.user.AuthenticatedUserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

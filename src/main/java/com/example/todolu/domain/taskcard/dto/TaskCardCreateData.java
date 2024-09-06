@@ -1,4 +1,4 @@
-package com.example.todolu.domain.taskcard;
+package com.example.todolu.domain.taskcard.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

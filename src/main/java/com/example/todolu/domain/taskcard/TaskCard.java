@@ -1,5 +1,6 @@
 package com.example.todolu.domain.taskcard;
 
+import com.example.todolu.domain.taskcard.dto.TaskCardUpdateData;
 import com.example.todolu.domain.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,7 +8,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
 @Table(name = "taskcards")
 @Entity(name = "TaskCard")
@@ -26,8 +26,7 @@ public class TaskCard {
     @JoinColumn(name = "creator_id")
     private User creator;
 
-    public TaskCard() {
-    }
+    public TaskCard(){}
 
     public TaskCard(String title, String description, LocalDateTime dueDate, User creator, String priority) {
         this.title = title;
