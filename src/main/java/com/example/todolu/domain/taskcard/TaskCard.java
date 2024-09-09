@@ -1,5 +1,6 @@
 package com.example.todolu.domain.taskcard;
 
+import com.example.todolu.domain.comment.Comment;
 import com.example.todolu.domain.taskcard.dto.TaskCardUpdateData;
 import com.example.todolu.domain.user.User;
 import jakarta.persistence.Entity;
@@ -8,6 +9,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Table(name = "taskcards")
 @Entity(name = "TaskCard")
@@ -21,6 +23,9 @@ public class TaskCard {
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
     private LocalDateTime dueDate;
+
+    @OneToMany(mappedBy = "taskCard")
+    private Set<Comment> comments;
 
     @ManyToOne
     @JoinColumn(name = "creator_id")

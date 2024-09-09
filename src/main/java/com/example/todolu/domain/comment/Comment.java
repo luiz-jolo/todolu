@@ -14,6 +14,26 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String description;
+    private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "taskcard_id", nullable = false)
+    private TaskCard taskCard;
+
+    public Comment(){}
+
+    public Comment(String description, User user, TaskCard taskCard){
+        this.description = description;
+        this.createdAt = LocalDateTime.now();
+        this.user = user;
+        this.taskCard = taskCard;
+    }
+
     public Long getId() {
         return id;
     }
@@ -51,22 +71,6 @@ public class Comment {
     }
 
     public void setTaskCard(TaskCard taskCard) {
-        this.taskCard = taskCard;
-    }
-
-    private String description;
-    private LocalDateTime createdAt;
-
-    private User user;
-
-    private TaskCard taskCard;
-
-    public Comment(){}
-
-    public Comment(String description, User user, TaskCard taskCard){
-        this.description = description;
-        this.createdAt = LocalDateTime.now();
-        this.user = user;
         this.taskCard = taskCard;
     }
 

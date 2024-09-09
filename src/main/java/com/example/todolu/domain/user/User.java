@@ -1,5 +1,6 @@
 package com.example.todolu.domain.user;
 
+import com.example.todolu.domain.comment.Comment;
 import com.example.todolu.domain.taskcard.TaskCard;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +21,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "creator")
     private Set<TaskCard> taskCards;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Comment> comments;
 
     @Override
     public String toString() {
