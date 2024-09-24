@@ -61,6 +61,11 @@ public class ErrorHandlerController {
         return ResponseEntity.badRequest().body("Malformed JSON request");
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
     public record ErrorFieldData(String field, String message){
         public ErrorFieldData(FieldError error){
             this(error.getField(), error.getDefaultMessage());

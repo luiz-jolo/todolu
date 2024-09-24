@@ -30,7 +30,6 @@ public class User implements UserDetails {
         return "User{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
 

@@ -4,6 +4,8 @@ import com.example.todolu.domain.taskcard.dto.TaskCardCreateData;
 import com.example.todolu.domain.taskcard.dto.TaskCardDetailData;
 import com.example.todolu.domain.taskcard.dto.TaskCardListData;
 import com.example.todolu.domain.taskcard.dto.TaskCardUpdateData;
+import com.example.todolu.domain.taskcard.validators.CreationValidator;
+import com.example.todolu.domain.taskcard.validators.OwnerEditionValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.todolu.domain.user.AuthenticatedUserService;
@@ -20,6 +22,8 @@ public class TaskCardService {
     private AuthenticatedUserService authenticatedUserService;
 
     public TaskCard create(TaskCardCreateData taskCardCreateData) {
+
+        CreationValidator.validate(taskCardCreateData);
 
         var creator = authenticatedUserService.getAuthenticatedUser();
         var taskCard = new TaskCard(
@@ -43,6 +47,9 @@ public class TaskCardService {
 
     public TaskCardDetailData updateTaskCard(TaskCardUpdateData taskCardData){
         var taskCard = taskCardRepository.getReferenceById(taskCardData.id());
+        var user = authenticatedUserService.getAuthenticatedUser();
+        //aply design pattern for this validation
+        OwnerEditionValidator.validate(taskCard, user);
         taskCard.updateInfo(taskCardData);
         return new TaskCardDetailData(taskCard);
     }
