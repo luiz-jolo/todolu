@@ -1,6 +1,7 @@
 package com.example.todolu.controller;
 
 import com.example.todolu.domain.user.UserService;
+import com.example.todolu.domain.user.dto.UserDetailData;
 import com.example.todolu.user.UserCreateData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,8 @@ public class UserController {
 
         var user = userService.create(userCreateData);
 
-        var uri = uriComponentsBuilder.path("/taskcard/{id}").buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(uri).body(user);
-
+        var uri = uriComponentsBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).body(new UserDetailData(user));
     }
 
 }
